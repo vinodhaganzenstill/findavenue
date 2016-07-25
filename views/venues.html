@@ -1,0 +1,40 @@
+<div class="right_col" role="main">
+          <!-- top tiles -->
+            <div class="row tile_count">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <h2>Cricket Grounds & Clubhouses</h2>  
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+          <input type="text" class="form-control search" placeholder="Search by Name" ng-model="search.venue_name">
+          </div>
+           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+          <input type="text" class="form-control search" placeholder="Search by Location" ng-model="search.venue_location">
+          </div>
+           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+          <input type="text" class="form-control search" placeholder="Search by Price" ng-model="search.cost">
+          </div>
+          </div>
+          <div class="row">
+            <div ng-class="{'col-lg-12 col-md-12 col-sm-12 col-sx-12':active_state == 'venues', 'col-lg-8 col-md-8 col-sm-8 col-sx-12': active_state != 'venues'}">
+              <div ng-repeat="venue in venues | filter:search" ng-class="{'col-lg-2 col-md-2 col-sm-2 col-sx-12':active_state == 'venues', 'col-lg-3 col-md-3 col-sm-3 col-sx-12': active_state != 'venues'}">
+                <div class="ground">
+                  <img ng-src="{{venue.image}}" class="img-responsive">
+                  <div class="ground-info">
+                    <a ng-href="#venues/detail/{{venue.id}}" class="btn btn-default">View Details</a>
+                    <a ng-href="#venues/book/{{venue.id}}" class="btn btn-default">Book Ground</a>
+                    <a ng-href="#venues/map/{{venue.id}}" class="btn btn-default">Map View</a>
+                  </div>
+                  <div class="ground-title">
+                    <p>{{venue.venue_name}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-show="active_state != 'venues'" class="col-lg-4 col-md-4 col-sm-4 col-sx-12" ui-view>
+          
+            </div>
+          </div>
+          <!-- /top tiles -->
+
+        </div>
+        <!-- /page content -->

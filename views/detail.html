@@ -1,0 +1,34 @@
+<div class="order venue-details">{{data}}
+      <h3 class="name-ground">{{page_data.venue_name}}</h3>
+      <div ng-show="active_tab_image.length" data-ride="carousel" class="carousel slide" id="myCarousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li ng-repeat="img in active_tab_image" ng-class="{active: $index==0}" data-slide-to="{{$index}}" data-target="#myCarousel"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div role="listbox" class="carousel-inner">
+    <div class="item " ng-repeat="img in active_tab_image" ng-class="{active: $index==0}">
+      <img alt="Chania" ng-src="{{img.image}}">
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a ng-show="active_tab_image.length > 1" data-slide="prev" role="button" class="left carousel-control">
+    <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a ng-show="active_tab_image.length > 1" data-slide="next" role="button" class="right carousel-control">
+    <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<br>
+<p ng-bind-html="page_data.venue_description"></p>
+<h4 class="face">Facilities</h4>
+<ul class="facillti">
+  <li ng-click="active_tab_id = 0;active_tab_image = page_data.images"><a href="#"><img ng-src="images/venue.png"></a></li>
+  <li ng-repeat="fac in page_data.facilities" ng-click="$parent.active_tab_id = fac.id;$parent.active_tab_image = fac.images"><a href="#"><img ng-src="images/fc{{fac.facility_id}}.png"></a></li>
+</ul>
+<span><a class="btn btn-success" href="#venues/book/{{page_data.id}}">Book Now</a></span>
+      </div>

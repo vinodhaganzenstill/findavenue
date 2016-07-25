@@ -1,0 +1,33 @@
+<div class="order">
+      <h3 class="name-ground">Your Order</h3>
+      <table class="table">
+    <tbody>
+      <tr ng-repeat="od in order_details track by $index">
+        <td>{{$index+1}}</td>
+        <td>{{od.name}}<br>{{od.booking_date}} / {{od.booking_time}} / {{od.cost}}</td>
+        <td class="rate text-right">${{od.quantity * od.cost}}</td>
+        <td><a href=""><i class="fa fa-times" aria-hidden="true"></i></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <span> <a href="#venues" class="btn btn-success">Back to Home</a></span>
+  <span ng-show="is_user_logged_in" ng-click="place_order();"> <a href="" class="btn btn-danger"> Place Order</a></span>
+  <span ng-hide="is_user_logged_in"> <a ng-href="#venues/login" class="btn btn-danger"> Place Order</a></span>
+  <!--<h4 class="face">Select a payment method</h4>
+  <div class="payment">
+  <img src="images/payment.png">
+  <div class="paypal"><img src="images/paypal.jpg">
+  </div>
+  </div>
+  <div class="pay-order">
+  <input type="radio" name="check"> <span  class="payment-md"> Cheque Payment</span>
+  <p class="pay-details">Lorem ipsum dolor sit amet, duis meis comprehensam nec ea. Iudico saperet maiorum pri .</p>
+  </div>
+  <div class="pay-order">
+  <input type="radio" name="check"> <span  class="payment-md"> Direct bank transfer</span>
+  <p class="pay-details">Lorem ipsum dolor sit amet, duis meis comprehensam nec ea. Iudico saperet maiorum pri .</p>
+  </div>
+  <span> <a href="" class="btn btn-success"> Pay Now</a></span>
+  <span> <a href="" class="btn btn-danger"> Cancel</a></span>-->
+  
+      </div>

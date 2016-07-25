@@ -1,0 +1,69 @@
+<div class="order">
+       <div calss="calendar">
+       <h2>Book Now</h2>
+       <h3 class="name-ground">{{page_data.venue_name}}</h3>
+       <div class="booking-head">
+       <h4>{{df2date(firstday)}} - {{df2date(lastday)}}</h4>
+       <span class="arrow-left" ng-click="previous_week();"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+       <span class="arrow-right" ng-click="next_week();"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+       </div>
+       <div class="booking-table">
+       <table class="table table-bordered ground-book" style="background:#fff;">
+        <thead>
+          <tr>
+            <th></th>
+            <th>S</th>
+            <th>M</th>
+            <th>T</th>
+            <th>W</th>
+            <th>T</th>
+            <th>F</th>
+            <th>S</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="hr in hours">
+            <td>{{hr.label}}</td>
+            <td ng-repeat="wk in weeks"><span class="" ng-class="{available:week_booking[wk][hr.val] == 0, booked:week_booking[wk][hr.val] == 1, selected:week_booking[wk][hr.val] == 2, addedincart:week_booking[wk][hr.val] == 3}" ng-click="book_slot(wk, hr.val)"></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    <ul class="descript">
+    <li><span class="available"></span><span class="a1"> Available</span></li>
+    <li><span class="booked"></span><span class="a1"> Booked</span></li>
+    <li><span class="selected"></span><span class="a1"> Selected</span></li>
+    <li><span class="addedincart"></span><span class="a1"> Selected</span></li>
+    </ul>
+    <div ng-show="booked_slot">
+    <h2>Choose facility you need?</h2>
+   <ul class="descript">
+     <li ng-repeat="fac in page_data.facilities" ng-click="booked_slot_divide_bydateandtime();">
+        <input type="checkbox" name="check" ng-model="fac.selected" id="fac_{{fac.id}}">
+        <label class="faciliti" for="fac_{{fac.id}}">{{fac.facility_name}}</label>
+      </li>
+    </ul>
+
+      <h3 class="name-ground">Your Order</h3>
+      <table class="table">
+    <tbody>
+      <tr ng-repeat="od in order_details">
+        <td>{{$index+1}}</td>
+        <td>{{od.name}}<br>{{od.booking_date}} / {{od.booking_time}} / {{od.cost}}</td>
+        <td class="rate text-right">${{od.quantity * od.cost}}</td>
+      </tr>
+      <tr>
+        <td class="rate" colspan="2"><b>Total amount</b></td>
+        <td class="rate text-right">${{total_amount()}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+    <span ng-show="booked_slot"> <a href="#" ng-click="add_to_cart()" class="btn btn-success"> Add to cart</a></span>
+  <span ng-show="booked_slot"> <a href="#venues/detail/{{active_id}}" class="btn btn-danger"> Cancel</a></span>
+    </div>
+
+</div>
+
+       </div>

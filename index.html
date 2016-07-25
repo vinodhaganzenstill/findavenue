@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>FindAVenue</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body ng-app="yapp" ng-class="{'nav-sm': toggle_body, 'nav-md': !toggle_body}" ng-init="toggle_body=true"  ng-controller="CommonCtrl">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"> <span>findavenue</span></a>
+            </div>
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <ul class="nav side-menu">
+                 <li><a href="#home"><i class="fa fa-home"></i> Home </a></li>
+                  <li><a href="#venues"><i class="fa fa-area-chart" aria-hidden="true"></i> Grounds & Clubhouse </a></li>
+                  <li><a href="#add_ground"><i class="fa fa-area-chart" aria-hidden="true"></i> Add Grounds & Clubhouse </a></li>
+                  <li><a><i class="fa fa-edit"></i> Booking </a></li>
+                  <li><a><i class="fa fa-desktop"></i> Facilities </a></li>
+                  <li><a><i class="fa fa-table"></i> Payment </a> </li>
+                  <li><a href="#contact"><i class="fa fa-phone" aria-hidden="true"></i> Contact </a></li>
+                </ul>
+              </div>
+             </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav class="" role="navigation">
+              <div class="nav toggle">
+                <a ng-click="toggle_body = !toggle_body;toggle_profile = false;toggle_cart = false;" id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+              <div class="pull-left search-box">
+              <input type="text" class="form-control search" placeholder="Search">
+              <i class="fa fa-search" aria-hidden="true"></i>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="is_user_logged_in"><a href="#/venues/login">Login</a></li>
+                <li ng-hide="is_user_logged_in"><a href="#/venues/signup">Signup</a></li>
+
+                <li ng-show="is_user_logged_in" ng-click="logout();"><a href="#">Logout</a></li>
+                <li ng-show="is_user_logged_in" ng-init="toggle_profile = false;" ng-class="{open: toggle_profile}" ng-click="toggle_profile = !toggle_profile;toggle_cart = false;">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="images/img.jpg" alt="">
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li>
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+
+                <li ng-init="toggle_cart = false" ng-class="{open: toggle_cart}" ng-click="toggle_cart = !toggle_cart;toggle_profile=false;" role="presentation" class="dropdown">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+
+                    <span class="badge bg-green">{{cart_details.length}}</span>
+                  </a>
+                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                    
+                    <li>
+                      <table class="table">
+                      <tbody>
+                        <tr ng-repeat="od in cart_details track by $index">
+                          <td>{{$index+1}}</td>
+                          <td>{{od.name}}<br>{{od.booking_date}} / {{od.booking_time}} / {{od.cost}}</td>
+                          <td class="rate text-right">${{od.quantity * od.cost}}</td>
+                        </tr>
+                        <tr>
+                          <td class="rate" colspan="2"><b>Total amount</b></td>
+                          <td class="rate text-right" colspan="2">${{total_amount()}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </li>
+                    <li>
+                    <a href="#venues/order">Checkout</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="">
+          <div ui-view ></div>
+        </div>
+        <!-- /page content -->
+        
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-left">
+            Copyrigh @rishi. <a href="#"></a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vendor.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/common.js"></script>
+    <script src="js/controllers/venues.js"></script>
+    <script src="js/controllers/home.js"></script>
+    <script src="js/controllers/about.js"></script>
+    <script src="js/controllers/ground.js"></script>
+    <script src="js/controllers/myorder.js"></script>
+    <script src="js/controllers/contact.js"></script>
+  </body>
+</html>
