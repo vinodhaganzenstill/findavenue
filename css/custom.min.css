@@ -155,3 +155,4 @@
 .welcome h2{color:#40AC57 !important; font-size:26px; font-weight:600;}
 .welcome p{ color:#444; line-height:30px; font-size:15px;}
 .welcome p a{ color:#40AC57;}
+.about{ background:url(../images/about.jpg) no-repeat #fff !important; background:100% 100%;  }
