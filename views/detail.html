@@ -27,8 +27,8 @@
 <p ng-bind-html="page_data.venue_description"></p>
 <h4 class="face">Facilities</h4>
 <ul class="facillti">
-  <li ng-click="active_tab_id = 0;active_tab_image = page_data.images"><a href="#"><img ng-src="images/venue.png"></a></li>
-  <li ng-repeat="fac in page_data.facilities" ng-click="$parent.active_tab_id = fac.id;$parent.active_tab_image = fac.images"><a href="#"><img ng-src="images/fc{{fac.facility_id}}.png"></a></li>
+  <li ng-class="{active_facility: active_tab_id == 0}" ng-click="active_tab_id = 0;active_tab_image = page_data.images"><a href="#"><img ng-src="images/venue.png"></a></li>
+  <li ng-repeat="fac in page_data.facilities" ng-click="$parent.active_tab_id = fac.id;$parent.active_tab_image = fac.images" ng-class="{active_facility: active_tab_id == fac.id}"><a href="#"><img ng-src="images/fc{{fac.facility_id}}.png"></a></li>
 </ul>
 <span><a class="btn btn-success" href="#venues/book/{{page_data.id}}">Book Now</a></span>
       </div>

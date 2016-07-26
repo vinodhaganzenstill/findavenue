@@ -41,66 +41,6 @@ angular.module('yapp', [
             });
         })
 
-
-.factory('AuthService', function ($http, Session) {
-    var authService = {};
-             
-    authService.venues = function () {
-    return $http
-        .get('http://zenstill.com/demo/findavenue/api.php?action=venues')
-        .then(function (res) {
-            return res['data'];
-        });
-    };
-
-    authService.venue_detail = function (id,month) {
-    return $http
-        .get('http://zenstill.com/demo/findavenue/api.php?action=venue_details&venue_id='+id+'&month='+month)
-        .then(function (res) {
-
-            return res['data'];
-        });
-    };
-
-    authService.booking_detail = function (start,end,id) {
-    return $http
-        .get('http://zenstill.com/demo/findavenue/api.php?action=checkavailability&start_date='+start+'&end_date='+end+'&venue_id='+id)
-        .then(function (res) {
-
-            return res['data'];
-        });
-    };
-
-    authService.login = function (data) {
-    return $http
-        .post('http://zenstill.com/demo/findavenue/api.php?action=login', data, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(function (res) {
-            return res['data'];
-        });
-    };
-
-    authService.signup = function (data) {
-    return $http
-        .post('http://zenstill.com/demo/findavenue/api.php?action=signup', data, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(function (res) {
-            return res['data'];
-        });
-    };
-
-    authService.booking = function (data) {
-    return $http
-        .post('http://zenstill.com/demo/findavenue/api.php?action=addbooking', data, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
-        .then(function (res) {
-            return res['data'];
-        });
-    };
-             
-    authService.isAuthenticated = function () {
-        return !!Session.userId;
-    };
-             
-    return authService;
-})
 .factory('Cookies', function ($http) {
     var cookies = {};
              

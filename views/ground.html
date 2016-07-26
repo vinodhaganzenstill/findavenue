@@ -1,14 +1,13 @@
 <div role="main" class="right_col" style="min-height: 729px;"> 
       <!-- top tiles -->
       <div class="row tile_count">
-        {{venue}}
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
           <div class="row">
             <div class="upload">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2>Add a venue</h2>
               </div>
-              <form novalidate="" class="form-horizontal form-label-left">
+              <form name="venue_form" novalidate="" class="form-horizontal form-label-left" ng-submit="add_venue()">
                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <input required ng-model="venue.venue_name" type="text" placeholder="Venue Name" class="form-control">
                 </div>
@@ -18,37 +17,43 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <h3 class="address">Address</h3>
                 </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.door_no" type="text" placeholder="Door no" class="form-control">
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  <input required ng-model="venue.address_door_no" type="text" placeholder="Door no" class="form-control">
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  <input required ng-model="venue.address_street" type="text" placeholder="Street Name" class="form-control">
+                </div>
+                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  <input ng-model="venue.address_county" type="text" placeholder="County" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.street" type="text" placeholder="Street Name" class="form-control">
+                  <input ng-model="venue.address_town" type="text" placeholder="Town" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input ng-model="venue.county" type="text" placeholder="County" class="form-control">
+                  <input required ng-model="venue.address_city" type="text" placeholder="City" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input ng-model="venue.town" type="text" placeholder="Town" class="form-control">
+                  <input required ng-model="venue.address_country" type="text" placeholder="Country" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.city" type="text" placeholder="City" class="form-control">
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.postcode" type="text" placeholder="Postcode" class="form-control">
+                  <input required ng-model="venue.address_postcode" type="text" placeholder="Postcode" class="form-control">
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                   <h4 class="address">Contact</h4>
                 </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <input required ng-model="venue.email" type="text" placeholder="Email Address" class="form-control">
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <input required ng-model="venue.contact_name" type="text" placeholder="Contact name" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.mobile" type="text" placeholder="Mobile Number" class="form-control">
+                  <input required ng-model="venue.contact_email" type="text" placeholder="Email Address" class="form-control">
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input required ng-model="venue.phone" type="text" placeholder="Phone Number" class="form-control">
+                  <input required ng-model="venue.contact_mobile" type="text" placeholder="Mobile Number" class="form-control">
                 </div>
-              </form>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <input required ng-model="venue.contact_landline" type="text" placeholder="Phone Number" class="form-control">
+                </div>
+              
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2>Cost</h2>
                 <table class="table table-bordered">
@@ -109,6 +114,7 @@
                   <button class="btn btn-primary" type="submit">Cancel</button>
                   <button class="btn btn-success" type="submit" id="send">Submit</button>
               </div>
+              </form>
             </div>
           </div>
         </div>
@@ -172,67 +178,69 @@
                     <h4 class="modal-title"> Choose our Facility</h4>
                   </div>
                   <div class="modal-body">
-                    <ul class="fi-ly">
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face1.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face2.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face3.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face4.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face5.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face6.png"></li>
-                      <li>
-                        <input type="checkbox">
-                        <img src="images/face7.png"></li>
+                    <ul class="fi-ly facillti">
+                      <li ng-repeat="fc in facility" ng-class="{active_facility: venue_facility.facility_id == fc.id}" ng-click="$parent.venue_facility.facility_id = fc.id;">
+                        <img ng-if="fc.facility_logo" ng-src="{{fc.facility_logo}}">
+                        <img ng-if="!fc.facility_logo" ng-src="{{'images/fc'+fc.id+'.png'}}">
+                      </li>
                     </ul>
-                    <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Start Month</th>
-                      <th>End Month</th>
-                      <th>Cost</th>
-                      <th>Add</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><div class="form-group">
-                          <select class="form-control">
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                            <option value="1">January</option>
-                          </select>
-                        </div></td>
-                      <td><div class="form-group">
-                          <select class="form-control">
-                            <option></option>
-                          </select>
-                        </div></td>
-                      <td><div class="form-group">
-                          <input type="text" style="width:50px;" placeholder="100" class="form-control">
-                        </div></td>
-                      <td><span class="add-row"><a href=""><i aria-hidden="true" class="fa fa-plus-square"></i></a></span></td>
-                    </tr>
-                  </tbody>
-                </table>
+                    <table class="table table-bordered" ng-show="venue_facility.facility_id">
+                      <thead>
+                        <tr>
+                          <th>Start Month</th>
+                          <th>End Month</th>
+                          <th>Cost</th>
+                          <th>Add</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="cost in venue_facility.cost_details">
+                          <td><div class="form-group">
+                              <select ng-model="venue_facility.cost_details[$index].from_month" class="form-control" ng-change="validate_cost()">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                              </select>
+                            </div></td>
+                          <td><div class="form-group">
+                              <select ng-model="venue_facility.cost_details[$index].to_month" class="form-control" ng-change="">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                              </select>
+                            </div></td>
+                          <td><div class="form-group">
+                              <input ng-model="venue_facility.cost_details[$index].cost" type="text" style="width:50px;" placeholder="100" class="form-control">
+                            </div></td>
+                          <td>
+                            <span ng-click="add_venue_facility_cost();" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-plus-square"></i></a></span>
+                            <span ng-show="venue_facility.cost_details.length > 1" ng-click="delete_venue_facility_cost($index);" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-trash-o"></i></a></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                   <div class="modal-footer">
                     <button data-dismiss="modal" class="btn btn-primary" type="submit">Cancel</button>
-                    <button class="btn btn-success" type="submit" id="send">Submit</button>
+                    <button ng-click="add_venue_facility()" class="btn btn-success" type="submit" id="send">Submit</button>
                   </div>
                 </div>
               </div>
@@ -249,12 +257,15 @@
                     <h4 class="modal-title">Upload images </h4>
                   </div>
                   <div class="modal-body">
-                    <select class="form-control"><option>Select venu</option><option>Select facility</option></select>
-                    <input type="file" style="margin-top:10px; padding:0;" class="form-control">
+                    <select class="form-control">
+                      <option>Select venue</option>
+                      <option ng-repeat="fc in facility" value="{{fc.id}}">{{fc.facility_name}}</option>
+                    </select>
+                    <input id="venue_image" type="file" style="margin-top:10px; padding:0;" class="form-control">
                   </div>
                   <div class="modal-footer">
                     <button data-dismiss="modal" class="btn btn-primary" type="submit">Cancel</button>
-                    <button class="btn btn-success" type="submit" id="send">Submit</button>
+                    <button  ng-click="add_venue_image()" class="btn btn-success" type="submit" id="send">Submit</button>
                   </div>
                 </div>
               </div>

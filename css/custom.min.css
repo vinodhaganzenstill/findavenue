@@ -140,7 +140,7 @@
 .add-row a{ color:#40AC57; font-size:24px;}
 .add-row { color:#40AC57; font-size:24px;} 
 .fi-ly{ padding:0;}
-.fi-ly li{ padding:7px 7px; list-style-type:none; display:inline-block;}
+.fi-ly li{list-style-type:none; display:inline-block;}
 .img-gallery{ margin-top:30px;}
 .delete-row{color:#F00 !important; font-size:16px;}
 .delete-img{ position:absolute; top:0; right:0; width:20px; height:20px; border-radius:20px; background:#f00; color:#fff;}
@@ -156,3 +156,4 @@
 .welcome p{ color:#444; line-height:30px; font-size:15px;}
 .welcome p a{ color:#40AC57;}
 .about{ background:url(../images/about.jpg) no-repeat #fff !important; background:100% 100%;  }
+.ng-submitted .ng-invalid, .form-group .ng-dirty.ng-invalid{border: 2px solid red;}
