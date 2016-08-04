@@ -30,10 +30,8 @@
                 <ul class="nav side-menu">
                  <li><a href="#home"><i class="fa fa-home"></i> Home </a></li>
                   <li><a href="#venues"><i class="fa fa-area-chart" aria-hidden="true"></i> Grounds & Clubhouse </a></li>
-                  <li><a href="#add_ground"><i class="fa fa-area-chart" aria-hidden="true"></i> Add Grounds & Clubhouse </a></li>
+                  <li ng-show="is_user_logged_in"><a href="#add_ground"><i class="fa fa-area-chart" aria-hidden="true"></i> Add Grounds & Clubhouse </a></li>
                   <li><a href="#about"><i class="fa fa-edit"></i> About </a></li>
-                  <li><a><i class="fa fa-desktop"></i> Facilities </a></li>
-                  <li><a><i class="fa fa-table"></i> Payment </a> </li>
                   <li><a href="#contact"><i class="fa fa-phone" aria-hidden="true"></i> Contact </a></li>
                 </ul>
               </div>
@@ -48,23 +46,24 @@
               <div class="nav toggle">
                 <a ng-click="toggle_body = !toggle_body;toggle_profile = false;toggle_cart = false;" id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <div class="pull-left search-box">
+              <div class="pull-left search-box hide">
               <input type="text" class="form-control search" placeholder="Search">
               <i class="fa fa-search" aria-hidden="true"></i>
               </div>
 
               <ul class="nav navbar-nav navbar-right">
+                <li ><a href="#">Help</a></li>
+                <li ng-show="is_user_logged_in"><a href="#add_ground">Become a host</a></li>
                 <li ng-hide="is_user_logged_in"><a href="#/venues/login">Login</a></li>
                 <li ng-hide="is_user_logged_in"><a href="#/venues/signup">Signup</a></li>
 
-                <li ng-show="is_user_logged_in" ng-click="logout();"><a href="#">Logout</a></li>
                 <li ng-show="is_user_logged_in" ng-init="toggle_profile = false;" ng-class="{open: toggle_profile}" ng-click="toggle_profile = !toggle_profile;toggle_cart = false;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">
+                    <img src="images/img.jpg" alt="">Welcome {{session_user.name}}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> Profile</a></li>
+                    <li><a href="#myprofile"> Profile</a></li>
                     <li>
                       <a href="javascript:;">
                         <span class="badge bg-red pull-right">50%</span>
@@ -72,7 +71,7 @@
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a ng-click="logout();"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 

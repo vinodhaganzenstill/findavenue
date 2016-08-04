@@ -36,7 +36,7 @@ angular.module('yapp')
     $scope.venue = {};
     $scope.venue_facility = {venue_id: $scope.active_id, facility_id: 0, cost_details: [{cost:"0", from_month: "1", to_month: "12"}]};
     $scope.venue_image = {venue_id: $scope.active_id, type:"image"};
-
+    $scope.venue_full_details = {};
 
     AuthService.allfacility().then(function(res){
       if(res.code == 200)
@@ -50,6 +50,22 @@ angular.module('yapp')
         $scope.venue = res.data.venue_details;
       }
     });
+
+    AuthService.venue_detail($scope.active_id).then(function(res){
+      if(res.status == "Success")
+      {
+        $scope.venue_full_details = res.data;
+      }
+    });
+
+    AuthService.getallfacilitiesforvenue($scope.active_id).then(function(res){
+      if(res.code == 200)
+      {
+        console.log(res.data);
+        $scope.venue_facility = res.data;
+      }
+    });
+
 
     $scope.add_venue_cost = function(){
       $scope.venue.cost_details.push({cost:"0", from_month: "1", to_month: "12"});
@@ -73,7 +89,13 @@ angular.module('yapp')
           if(res.code == 200)
           {
             $("#myModal1").modal("hide");
-            $scope.venue_facility = {venue_id: $scope.active_id, facility_id: 0, cost_details: [{cost:"0", from_month: "1", to_month: "12"}]};
+            //$scope.venue_facility = {venue_id: $scope.active_id, facility_id: 0, cost_details: [{cost:"0", from_month: "1", to_month: "12"}]};
+            AuthService.venue_detail($scope.active_id).then(function(res){
+              if(res.status == "Success")
+              {
+                $scope.venue_full_details = res.data;
+              }
+            });
           }
         });
     };
@@ -88,17 +110,18 @@ angular.module('yapp')
           reader.onload = function(readerEvt) {
               var binaryString = readerEvt.target.result;
               $scope.$apply(function(){
-                $scope.venue_image.image = binaryString;
+                $scope.venue_image.venue_images = [{image: binaryString, media_type: "image", media_title: "Title", media_description: "Description"}];
               });
           };
 
-          reader.readAsBinaryString(file);
+          reader.readAsDataURL(file);
       }
     });
 
     $scope.add_venue_image = function()
     {
-        console.log($scope.venue_image.image);
+        //console.log($scope.venue_image.image);
+        //$scope.venue_image.venue_images = [{image: $scope.venue_image.image, media_type: "image", media_title: "Title", media_description: "Description"}];
         if($scope.venue_image){
           AuthService.add_venue_image($scope.venue_image).then(function(res){
             if(res.code == 200)

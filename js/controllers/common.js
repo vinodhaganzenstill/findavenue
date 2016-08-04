@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('CommonCtrl', function($scope, Session, $location, AUTH_REDIRECT, AuthService, $rootScope) {
+  .controller('CommonCtrl', function($scope, Session, $location, AUTH_REDIRECT, AuthService, $rootScope, $timeout, $state) {
 
   	$scope.session_user = Session.user;
 
@@ -40,5 +40,39 @@ angular.module('yapp')
         });
         return amt;
     };
+
+    if(AuthService.isAuthenticated())
+    {
+        if(Session.user.status == "0")
+        {
+            $timeout(function(){
+                $location.path('venues/verify_mobile');
+            }, 1000);
+        }
+    }
+
+    $rootScope.$on('$stateChangeStart', 
+    function(event, toState, toParams, fromState, fromParams){ 
+      console.log(toState.name, fromState.name);
+      if(AuthService.isAuthenticated())
+      {
+          if(Session.user.status == "0")
+          {
+              if(fromState.name == 'venues')
+              {
+                $timeout(function(){
+                  $state.go('verify_mobile');
+                }, 1000);
+              }
+              else
+              {
+                $location.path('venues');
+                $timeout(function(){
+                    $state.go('verify_mobile');
+                }, 1000);
+              }
+          }
+      }
+    });
 
   });

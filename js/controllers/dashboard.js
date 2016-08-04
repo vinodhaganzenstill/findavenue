@@ -8,15 +8,8 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('VenuesCtrl', function($scope, $timeout, $state, AuthService, $location, Session, $rootScope, $sce) {
+  .controller('DashboardCtrl', function($scope, $timeout, $state, AuthService, $location, Session, $rootScope) {
     
-    if(typeof $rootScope.search != "undefined")
-    {
-        $scope.search = $rootScope.search;
-        delete $rootScope.search;
-    }
-    
-
     $scope.venues = [];
 
   	AuthService.venues().then(function(res){
@@ -30,12 +23,10 @@ angular.module('yapp')
     $scope.signup = function(user, form){
         if(form.$valid){
             AuthService.signup(user).then(function(res){
-                if(res.status == "Success")
+                if(res.data.status != "error")
                 {
-                    $scope.login(user, form);
+                    $state.go('login');
                 }
-                else
-                    $scope.$$childHead.msg = res.status;
             });
         }
     };
@@ -44,17 +35,12 @@ angular.module('yapp')
         if(form.$valid)
         {   
             AuthService.login(data).then(function(res){
-                if(res.status == "Success")
+                if(res.data.status != "error")
                 {
                     Session.create(res.data, true);
                     $rootScope.$broadcast('SESSIONCHANGE');
-                    if(res.data.status == "1")
-                        $location.path('/myprofile');
-                    else
-                        $state.go('verify_mobile');
+                    $location.path('/dashboard');
                 }
-                else
-                    $scope.$$childHead.msg = res.status;
             }); 
         }
     }
@@ -77,28 +63,13 @@ angular.module('yapp')
 
     $scope.week_booking = {};
 
-    $(document).on('click', ".left", function(){
-        $("#myCarousel").carousel("prev");
-        console.log("dfsd");
-    });
-    $(document).on('click', ".right", function(){
-        $("#myCarousel").carousel("next");
-    });
-
     $scope.actions = function(){
         if($scope.active_state == 'detail' || $scope.active_state == 'map')
         {
-            AuthService.venue_detail($scope.active_id, new Date().getMonth()+1).then(function(res){
+            AuthService.venue_detail($scope.active_id).then(function(res){
                 if(res['status'] == 'Success')
                 {
                     $scope.page_data = res['data'];
-                    $scope.page_data.venue_description = $sce.trustAsHtml($scope.page_data.venue_description);
-
-                    $scope.active_tab_id = 0;
-                    $scope.active_tab_image = $scope.page_data.images;
-                    $timeout(function(){
-                        angular.element('#myCarousel').carousel();
-                    }, 1000);
                 }
             });
         }
@@ -119,49 +90,18 @@ angular.module('yapp')
             if(AuthService.isAuthenticated())
                 $location.path('/venues');
         }
-        else if($scope.active_state == 'verify_mobile')
-        {
-            if(AuthService.isAuthenticated())
-                $location.path('/venues');
-        }
-        else if($scope.active_state == 'order_success')
-        {
-            
-            $scope.order_details = Session.cart_details;
-            var data = {user_id: Session.user_id, total_amount: $scope.total_amount(), booking_details: $scope.cart_details};
-
-            AuthService.booking(data).then(function(res){
-                Session.cart_details = [];
-                $rootScope.$broadcast("CARTCHANGE");
-                localStorage.setItem('cart_details', JSON.stringify(Session.cart_details));
-                $timeout(function(){$state.go("myprofile");}, 3000);
-            });
-        }
-        else if($scope.active_state == 'order_cancel')
-        {
-
-        }
     };
 
     $scope.place_order = function()
     {
         var data = {user_id: Session.user_id, total_amount: $scope.total_amount(), booking_details: $scope.cart_details};
-        
-        var $paypal = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_xclick&no_note=1&lc=UK&currency_code=GBP&bn=PP-BuyNowBF:btn_buynow_LG.gif:NonHostedGuest";
-        $paypal += "&first_name=vino&last_name=gautam&payer_email=dhanavel237vino@gmail.com&item_number=1";
-
-        $paypal += "&business=vinodhagan.samsys@gmail.com&item_name=FindaSportvenue&amount="+$scope.total_amount();
-        $paypal += "&return="+window.location.origin+window.location.pathname+"?success";
-        $paypal += "&cancel_return="+window.location.origin+window.location.pathname+"?cancel";
-        $paypal += "&notify_url="+window.location.origin+window.location.pathname+"#notify";
-
-        /*AuthService.booking(data).then(function(res){
+            
+        AuthService.booking(data).then(function(res){
             Session.cart_details = [];
             $rootScope.$broadcast("CARTCHANGE");
             localStorage.setItem('cart_details', JSON.stringify(Session.cart_details));
             $state.go("venues");
-        });*/
-        window.location.assign($paypal);
+        });
     };
 
 
@@ -385,28 +325,5 @@ angular.module('yapp')
         $scope.active_id = toParams.venue_id;
         $scope.actions();
     });
-
-    $scope.otp = '';
-
-    $scope.send_otp = function(){
-        AuthService.send_otp({"countryCode": "91", "mobileNumber": Session.user.mobile}).then(function(res){
-            $scope.$$childTail.otp = res.otp;
-            $scope.otp = res.otp;
-        });
-    };
-
-    $scope.verify_mobile = function(uotp){
-        console.log($scope);
-        if(uotp == $scope.otp)
-        {
-            AuthService.verfied_user(Session.user.id).then(function(){
-                Session.user.status = '1';
-                Session.create(Session.user, true);
-                $location.path('/myprofile');
-            });
-        }
-        else
-            $scope.$$childTail.msg = "Invalid otp";
-    };
 
   });

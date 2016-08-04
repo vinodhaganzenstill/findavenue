@@ -1,0 +1,14 @@
+<div class="login">
+      <h2>Verify mobile</h2>
+      <form name="signup_form" ng-submit="verify_mobile(uotp)"  novalidate="" method="post">
+            <p class="error_message" ng-show="msg" ng-bind="msg"></p>
+            <p ng-show="!otp"><span ng-click="send_otp();" class="btn btn-success">Click here verify your mobile</span> </p>
+            <div ng-show="otp">
+              <h3>Please enter OTP.</h3>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="****" required ng-model="uotp" name="otp"/>
+              </div>
+              <p><span style="float:right;"> <input type="submit" class="btn btn-success" value="verify" name=""/></span> </p>
+            </div>
+      </form>
+</div>
