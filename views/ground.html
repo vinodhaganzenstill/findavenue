@@ -62,13 +62,12 @@
                       <th>Start Month</th>
                       <th>End Month</th>
                       <th>Cost</th>
-                      <th>Add</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr ng-repeat="cost in venue.cost_details">
                       <td><div class="form-group">
-                          <select ng-model="venue.cost_details[$index].from_month" class="form-control" ng-change="validate_cost()">
+                          <select readonly ng-model="venue.cost_details[$index].from_month" class="form-control" >
                             <option value="1">January</option>
                             <option value="2">February</option>
                             <option value="3">March</option>
@@ -84,28 +83,24 @@
                           </select>
                         </div></td>
                       <td><div class="form-group">
-                          <select ng-model="venue.cost_details[$index].to_month" class="form-control" ng-change="">
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
+                          <select ng-model="venue.cost_details[$index].to_month" class="form-control" ng-change="validate_cost(venue.cost_details, $index)">
+                            <option ng-hide="venue.cost_details[$index].from_month > 1" value="1">January</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 2" value="2">February</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 3" value="3">March</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 4" value="4">April</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 5" value="5">May</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 6" value="6">June</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 7" value="7">July</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 8" value="8">August</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 9" value="9">September</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 10" value="10">October</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 11" value="11">November</option>
+                            <option ng-hide="venue.cost_details[$index].from_month > 12" value="12">December</option>
                           </select>
                         </div></td>
                       <td><div class="form-group">
                           <input ng-model="venue.cost_details[$index].cost" type="text" style="width:50px;" placeholder="100" class="form-control">
                         </div></td>
-                      <td>
-                        <span ng-click="add_venue_cost();" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-plus-square"></i></a></span>
-                        <span ng-show="venue.cost_details.length > 1" ng-click="delete_venue_cost($index);" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-trash-o"></i></a></span>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -123,43 +118,42 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <h2>Facility</h2>
               <h4 style="margin-bottom:10px; display:inline-block; width:100%;">Choose Facility <span style="float:right;" data-target="#myModal1" data-toggle="modal" class="add-row"><i aria-hidden="true" class="fa fa-plus-square"></i></span></h4>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th></th>
-                    <th>Facility Name</th>
-                    <th>Cost</th>
-                    <th>Delete</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="fac in venue_full_details.facilities">
-                    <td>{{$index+1}}</td>
-                    <td><img ng-src="{{fac.facility_logo}}" width="50"></td>
-                    <td>{{fac.facility_name}}</td>
-                    <td>{{fac.cost}}</td>
-                    <td class="delete-row"><i aria-hidden="true" class="fa fa-trash-o"></i></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="facility_table">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th></th>
+                      <th>Facility Name</th>
+                      <th>Cost</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="fac in venue_full_details.facilities">
+                      <td>{{$index+1}}</td>
+                      <td><img ng-src="{{fac.facility_logo}}" width="50"></td>
+                      <td>{{fac.facility_name}}</td>
+                      <td>{{fac.cost}}</td>
+                      <td ng-click="delete_facility(fac.facility_id)" class="delete-row"><i aria-hidden="true" class="fa fa-trash-o"></i></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <h2>Image Gallary</h2>
-              <ul class="fi-ly">
-                <li><img src="images/fc1.png"></li>
-                <li><img src="images/fc2.png"></li>
-                <li><img src="images/fc3.png"></li>
-                <li><img src="images/fc4.png"></li>
-                <li><img src="images/fc5.png"></li>
-                <li><img src="images/fc6.png"></li>
-                <li><img src="images/fc7.png"></li>
-                <span data-target="#myModal2" data-toggle="modal" style="float:right; margin-top:8px; display:block;" class="add-row"><i aria-hidden="true" class="fa fa-plus-square"></i></span>
+              <ul class="fi-ly facillti">
+                <li ng-click="search.facility_id = '0';" ng-class="{active_facility: search.facility_id == '0'}"><img ng-src="images/venue.png"></li>
+                <li ng-repeat="fac in venue_full_details.facilities" ng-click="$parent.search.facility_id = fac.facility_id;" ng-class="{active_facility: search.facility_id == fac.facility_id}">
+                  <img ng-src="{{fac.facility_logo}}">
+                </li>
+
+                <span ng-click="venue_image.facility_id = 0;" data-target="#myModal2" data-toggle="modal" style="float:right; margin-top:8px; display:block;" class="add-row"><i aria-hidden="true" class="fa fa-plus-square"></i></span>
               </ul>
               <div class="img-gallery">
               <ul class="fi-ly">
-                <li ng-repeat="imgs in venue_full_details.images"><div class="gal-img"><img src="//zenstill.com/findavenue/api{{imgs.media_location}}"><div class="delete-img"><i aria-hidden="true" class="fa fa-trash-o"></i></div></div></li>
-                <li ng-repeat="faci in venue_full_details.facilities"><div class="gal-img" ng-repeat="imgs in faci.images"><img src="//zenstill.com/findavenue/api{{imgs.media_location}}"></div></li>
+                <li ng-repeat="imgs in venue_images | filter:search"><div class="gal-img"><img src="//zenstill.com/findavenue/api{{imgs.media_location}}"><div class="delete-img" ng-click="delete_image(imgs.id)"><i aria-hidden="true" class="fa fa-trash-o"></i></div></div></li>
                 </ul>
               </div>
             </div>
@@ -186,13 +180,12 @@
                           <th>Start Month</th>
                           <th>End Month</th>
                           <th>Cost</th>
-                          <th>Add</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr ng-repeat="cost in venue_facility.cost_details">
                           <td><div class="form-group">
-                              <select ng-model="venue_facility.cost_details[$index].from_month" class="form-control" ng-change="validate_cost()">
+                              <select  readonly ng-model="venue_facility.cost_details[$index].from_month" class="form-control" >
                                 <option value="1">January</option>
                                 <option value="2">February</option>
                                 <option value="3">March</option>
@@ -208,28 +201,24 @@
                               </select>
                             </div></td>
                           <td><div class="form-group">
-                              <select ng-model="venue_facility.cost_details[$index].to_month" class="form-control" ng-change="">
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
+                              <select ng-model="venue_facility.cost_details[$index].to_month" class="form-control" ng-change="validate_cost(venue_facility.cost_details, $index)">
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 1" value="1">January</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 2" value="2">February</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 3" value="3">March</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 4" value="4">April</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 5" value="5">May</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 6" value="6">June</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 7" value="7">July</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 8" value="8">August</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 9" value="9">September</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 10" value="10">October</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 11" value="11">November</option>
+                            <option ng-hide="venue_facility.cost_details[$index].from_month > 12" value="12">December</option>
                               </select>
                             </div></td>
                           <td><div class="form-group">
                               <input ng-model="venue_facility.cost_details[$index].cost" type="text" style="width:50px;" placeholder="100" class="form-control">
                             </div></td>
-                          <td>
-                            <span ng-click="add_venue_facility_cost();" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-plus-square"></i></a></span>
-                            <span ng-show="venue_facility.cost_details.length > 1" ng-click="delete_venue_facility_cost($index);" class="add-row"><a href=""><i aria-hidden="true" class="fa fa-trash-o"></i></a></span>
-                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -255,7 +244,7 @@
                   <div class="modal-body">
                     <select class="form-control" ng-model="venue_image.facility_id">
                       <option value="0">Select venue</option>
-                      <option ng-repeat="fc in facility" value="{{fc.id}}">{{fc.facility_name}}</option>
+                      <option ng-repeat="fac in venue_full_details.facilities" ng-value="fac.facility_id">{{fac.facility_name}}</option>
                     </select>
                     <input id="venue_image" type="file" style="margin-top:10px; padding:0;" class="form-control">
                   </div>

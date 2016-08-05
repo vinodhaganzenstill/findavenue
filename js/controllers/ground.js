@@ -4,13 +4,19 @@ angular.module('yapp')
   	$scope.active_state = $state.current.name;
   	$scope.venue = {cost_details: [{cost:"0", from_month: "1", to_month: "12"}], user_id: Session.userId};
 
-  	$scope.add_venue_cost = function(){
-  		$scope.venue.cost_details.push({cost:"0", from_month: "1", to_month: "12"});
-  	};
+  	$scope.validate_cost = function(cost_details, ind){
 
-  	$scope.delete_venue_cost = function(id){
-  		$scope.venue.cost_details.splice(id, 1);
-  	};
+      if(cost_details[ind].to_month == "12")
+      {
+        cost_details.splice(ind + 1, cost_details.length - (ind+1));
+      }
+      else
+      {
+        cost_details.splice(ind + 1, cost_details.length - (ind+1));
+        cost_details.push({cost:"0", from_month: (parseInt(cost_details[ind].to_month)+1).toString(), to_month: "12"});
+      }
+
+    };
 
     $scope.add_venue = function()
     {
@@ -37,7 +43,8 @@ angular.module('yapp')
     $scope.venue_facility = {venue_id: $scope.active_id, facility_id: 0, cost_details: [{cost:"0", from_month: "1", to_month: "12"}]};
     $scope.venue_image = {venue_id: $scope.active_id, type:"image"};
     $scope.venue_full_details = {};
-
+    $scope.venue_images = [];
+    $scope.search = {};
     AuthService.allfacility().then(function(res){
       if(res.code == 200)
       {
@@ -66,21 +73,39 @@ angular.module('yapp')
       }
     });
 
+    AuthService.get_images_by_venue_id($scope.active_id).then(function(res){
+      if(res.status == "Success")
+      {
+        $scope.venue_images = res.data.images;
+      }
+    });
 
-    $scope.add_venue_cost = function(){
-      $scope.venue.cost_details.push({cost:"0", from_month: "1", to_month: "12"});
+    $scope.delete_facility = function(id){
+      AuthService.delete_facility_by_id($scope.active_id, id).then(function(res){
+        if(res.status == "Success")
+        {
+          AuthService.venue_detail($scope.active_id).then(function(res){
+              if(res.status == "Success")
+              {
+                $scope.venue_full_details = res.data;
+              }
+            });
+        }
+      });
     };
 
-    $scope.delete_venue_cost = function(id){
-      $scope.venue.cost_details.splice(id, 1);
-    };
-
-    $scope.add_venue_facility_cost = function(){
-      $scope.venue_facility.cost_details.push({cost:"0", from_month: "1", to_month: "12"});
-    };
-
-    $scope.delete_venue_facility_cost = function(id){
-      $scope.venue_facility.cost_details.splice(id, 1);
+    $scope.delete_image = function(id){
+      AuthService.delete_image_by_id(id).then(function(res){
+        if(res.status == "Success")
+        {
+          AuthService.get_images_by_venue_id($scope.active_id).then(function(res){
+            if(res.status == "Success")
+            {
+              $scope.venue_images = res.data.images;
+            }
+          });
+        }
+      });
     };
 
     $scope.add_venue_facility = function()
@@ -88,12 +113,12 @@ angular.module('yapp')
         AuthService.add_venue_facility($scope.venue_facility).then(function(res){
           if(res.code == 200)
           {
-            $("#myModal1").modal("hide");
             //$scope.venue_facility = {venue_id: $scope.active_id, facility_id: 0, cost_details: [{cost:"0", from_month: "1", to_month: "12"}]};
             AuthService.venue_detail($scope.active_id).then(function(res){
               if(res.status == "Success")
               {
                 $scope.venue_full_details = res.data;
+                $("#myModal1").modal("hide");
               }
             });
           }
@@ -120,16 +145,34 @@ angular.module('yapp')
 
     $scope.add_venue_image = function()
     {
-        //console.log($scope.venue_image.image);
-        //$scope.venue_image.venue_images = [{image: $scope.venue_image.image, media_type: "image", media_title: "Title", media_description: "Description"}];
         if($scope.venue_image){
           AuthService.add_venue_image($scope.venue_image).then(function(res){
             if(res.code == 200)
             {
-              console.log(res);
+              AuthService.get_images_by_venue_id($scope.active_id).then(function(res){
+                if(res.status == "Success")
+                {
+                  $scope.venue_images = res.data.images;
+                  $("#myModal2").modal("hide");
+                }
+              });
             }
           });
         }
+    };
+
+    $scope.validate_cost = function(cost_details, ind){
+
+      if(cost_details[ind].to_month == "12")
+      {
+        cost_details.splice(ind + 1, cost_details.length - (ind+1));
+      }
+      else
+      {
+        cost_details.splice(ind + 1, cost_details.length - (ind+1));
+        cost_details.push({cost:"0", from_month: (parseInt(cost_details[ind].to_month)+1).toString(), to_month: "12"});
+      }
+
     };
 
   });

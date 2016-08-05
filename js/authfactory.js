@@ -163,6 +163,30 @@ angular.module('yapp')
         });
     };
 
+    authService.get_images_by_venue_id = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=get_images_by_venue_id&venue_id='+id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.delete_facility_by_id = function (venue_id, id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=delete_facility_by_id&venue_id='+venue_id+'&facility_id='+id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.delete_image_by_id = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=delete_image_by_id&venue_id=1&image_id='+id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
     authService.isAuthenticated = function () {
         return !!Session.userId;
     };

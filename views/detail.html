@@ -1,5 +1,6 @@
 <div class="order venue-details">{{data}}
       <h3 class="name-ground">{{page_data.venue_name}}</h3>
+      <p><span class="ground-rate">Rs 5000</span><span class="location">Velachery</span></p>
       <div ng-show="active_tab_image.length" data-ride="carousel" class="carousel slide" id="myCarousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">
@@ -27,8 +28,8 @@
 <p ng-bind-html="page_data.venue_description"></p>
 <h4 class="face">Facilities</h4>
 <ul class="facillti">
-  <li ng-class="{active_facility: active_tab_id == 0}" ng-click="active_tab_id = 0;active_tab_image = page_data.images"><a href="#"><img ng-src="images/venue.png"></a></li>
-  <li ng-repeat="fac in page_data.facilities" ng-click="$parent.active_tab_id = fac.id;$parent.active_tab_image = fac.images" ng-class="{active_facility: active_tab_id == fac.id}"><a href="#"><img ng-src="images/fc{{fac.facility_id}}.png"></a></li>
+  <li ng-class="{active_facility: active_tab_id == 0}" ng-click="active_tab_id = 0;active_tab_image = page_data.images"><img ng-src="images/venue.png"></li>
+  <li ng-repeat="fac in page_data.facilities" ng-click="$parent.active_tab_id = fac.id;$parent.active_tab_image = fac.images" ng-class="{active_facility: active_tab_id == fac.id}"><img ng-src="images/fc{{fac.facility_id}}.png"></li>
 </ul>
 <span><a class="btn btn-success" href="#venues/book/{{page_data.id}}">Book Now</a></span>
       </div>
