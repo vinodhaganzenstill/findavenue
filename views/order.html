@@ -1,18 +1,22 @@
 <div class="order">
-      <h3 class="name-ground">Your Order</h3>
-      <table class="table">
-    <tbody>
-      <tr ng-repeat="od in order_details track by $index">
-        <td>{{$index+1}}</td>
-        <td>{{od.name}}<br>{{od.booking_date}} / {{od.booking_time}} / {{od.cost}}</td>
-        <td class="rate text-right">${{od.quantity * od.cost}}</td>
-        <td><a href=""><i class="fa fa-times" aria-hidden="true"></i></a></td>
-      </tr>
-    </tbody>
-  </table>
-  <span> <a href="#venues" class="btn btn-success">Back to Home</a></span>
-  <span ng-show="is_user_logged_in" ng-click="place_order();"> <a href="" class="btn btn-danger"> Place Order</a></span>
-  <span ng-hide="is_user_logged_in"> <a ng-href="#venues/login" class="btn btn-danger"> Place Order</a></span>
+  <h3 class="name-ground">Cart</h3>
+    <table ng-show="order_details.length" class="table">
+      <tbody>
+        <tr ng-repeat="od in order_details track by $index">
+          <td width="20%" class="text-center" ng-if="!od.sindex"><span>{{od.mindex}}</span></td>
+          <td width="20%" class="text-right" ng-if="od.sindex"><li class="ng-binding" style="list-style: inside none disc;"></li></td>
+          <td width="60%">{{od.name}}<br>{{od.booking_date}} / {{od.booking_time}} / {{od.cost}}</td>
+          <td width="15%" class="rate text-right">${{od.quantity * od.cost}}</td>
+          <td width="5%" ng-click="delete_cart_item($index);"><a href=""><i class="fa fa-times" aria-hidden="true"></i></a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div ng-show="order_details.length">
+      <span ng-show="is_user_logged_in" ng-click="place_order();"> <a href="" class="btn btn-success"> Place Order</a></span>
+      <span ng-hide="is_user_logged_in"> <a ng-href="#venues/login" class="btn btn-success"> Place Order</a></span>
+      <span ng-click="clear_cart();"> <a class="btn btn-danger">Clear Cart</a></span>
+    </div>
+    <p ng-hide="order_details.length">Cart Empty</p>
 
   <!--<h4 class="face">Select a payment method</h4>
   <div class="payment">

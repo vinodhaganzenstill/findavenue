@@ -117,7 +117,7 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <h2>Facility</h2>
-              <h4 style="margin-bottom:10px; display:inline-block; width:100%;">Choose Facility <span style="float:right;" data-target="#myModal1" data-toggle="modal" class="add-row"><i aria-hidden="true" class="fa fa-plus-square"></i></span></h4>
+              <h4 style="margin-bottom:10px; display:inline-block; width:100%;">Choose Facility <span style="float:right;" data-target="#myModal1" data-toggle="modal" class="add-row" ng-click="editmode = false  ;"><i aria-hidden="true" class="fa fa-plus-square"></i></span></h4>
               <div class="facility_table">
                 <table class="table table-bordered">
                   <thead>
@@ -126,16 +126,19 @@
                       <th></th>
                       <th>Facility Name</th>
                       <th>Cost</th>
-                      <th>Delete</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="fac in venue_full_details.facilities">
+                    <tr ng-repeat="fac in venue_facilities">
                       <td>{{$index+1}}</td>
-                      <td><img ng-src="{{fac.facility_logo}}" width="50"></td>
-                      <td>{{fac.facility_name}}</td>
-                      <td>{{fac.cost}}</td>
-                      <td ng-click="delete_facility(fac.facility_id)" class="delete-row"><i aria-hidden="true" class="fa fa-trash-o"></i></td>
+                      <td><img ng-src="{{fac[0].facility_logo}}" width="50"></td>
+                      <td>{{fac[0].facility_name}}</td>
+                      <td><div ng-repeat="f in fac">{{months[f.from_month]}} to {{months[f.to_month]}} - {{f.cost}}</div></td>
+                      <td>
+                        <span data-target="#myModal1" data-toggle="modal" ><i class="fa fa-pencil" ng-click="venue_facility.cost_details = fac;venue_facility.facility_id = fac[0].facility_id;$parent.editmode = true;"></i></span>
+                        <span ng-click="delete_facility(fac[0].facility_id)" class="delete-row"><i aria-hidden="true" class="fa fa-trash-o"></i></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -145,8 +148,8 @@
               <h2>Image Gallary</h2>
               <ul class="fi-ly facillti">
                 <li ng-click="search.facility_id = '0';" ng-class="{active_facility: search.facility_id == '0'}"><img ng-src="images/venue.png"></li>
-                <li ng-repeat="fac in venue_full_details.facilities" ng-click="$parent.search.facility_id = fac.facility_id;" ng-class="{active_facility: search.facility_id == fac.facility_id}">
-                  <img ng-src="{{fac.facility_logo}}">
+                <li ng-repeat="fac in venue_facilities" ng-click="$parent.search.facility_id = fac[0].facility_id;" ng-class="{active_facility: search.facility_id == fac[0].facility_id}">
+                  <img ng-src="{{fac[0].facility_logo}}">
                 </li>
 
                 <span ng-click="venue_image.facility_id = 0;" data-target="#myModal2" data-toggle="modal" style="float:right; margin-top:8px; display:block;" class="add-row"><i aria-hidden="true" class="fa fa-plus-square"></i></span>
@@ -156,6 +159,46 @@
                 <li ng-repeat="imgs in venue_images | filter:search"><div class="gal-img"><img src="//zenstill.com/findavenue/api{{imgs.media_location}}"><div class="delete-img" ng-click="delete_image(imgs.id)"><i aria-hidden="true" class="fa fa-trash-o"></i></div></div></li>
                 </ul>
               </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <h2>Availability</h2>
+                <div class="img-gallery">
+                  <form name="availability_form" novalidate="" class="form-horizontal form-label-left" ng-submit="add_availability(venue_availability)">
+                    Day of Week:
+                     <select ng-model="venue_availability.day" class="form-control" required="required" multiple="true">
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                      </select>
+                      End Date:
+                      <input type="text" name="enddate" ng-model="venue_availability.enddate" class="form-control" required="required" />
+                      <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"><br/>
+                         <button class="btn btn-primary" type="reset">Cancel</button>
+                         <button class="btn btn-success" type="submit" id="send">Submit</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+
+             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <h2>Availability</h2>
+                <div class="img-gallery">
+                  <form name="availability_form1" novalidate="" class="form-horizontal form-label-left" ng-submit="add_availability1(venue_availability1)">
+                    Day of Month:
+                     <select ng-model="venue_availability1.day" class="form-control" required="required" multiple="true">
+                        <option value="{{$index+1}}" ng-repeat="i in getNumber(number) track by $index">{{$index+1}}</option>
+                      </select>
+                      No of months:
+                      <input type="text" name="enddate" ng-model="venue_availability1.enddate" class="form-control" required="required" />
+                      <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12"><br/>
+                         <button class="btn btn-primary" type="reset">Cancel</button>
+                         <button class="btn btn-success" type="submit" id="send">Submit</button>
+                      </div>
+                    </form>
+                </div>
             </div>
             <!-- Modal Facility-->
             <div role="dialog" id="myModal1" class="modal fade">
@@ -169,9 +212,18 @@
                   </div>
                   <div class="modal-body">
                     <ul class="fi-ly facillti">
-                      <li ng-repeat="fc in facility" ng-class="{active_facility: venue_facility.facility_id == fc.id}" ng-click="$parent.venue_facility.facility_id = fc.id;">
-                        <img ng-if="fc.facility_logo" ng-src="{{fc.facility_logo}}">
-                        <img ng-if="!fc.facility_logo" ng-src="{{'images/fc'+fc.id+'.png'}}">
+                      <li ng-repeat="fc in facility" ng-class="{active_facility: venue_facility.facility_id == fc.id, selected_facility: (is_selected_speciality(fc.id) && !editmode)}" >
+                        <span ng-show="!editmode">
+                          <img ng-click="$parent.venue_facility.facility_id = fc.id;" ng-show="fc.facility_logo && !is_selected_speciality(fc.id)" ng-src="{{fc.facility_logo}}">
+                          <img ng-click="$parent.venue_facility.facility_id = fc.id;" ng-show="!fc.facility_logo && !is_selected_speciality(fc.id)" ng-src="{{'images/fc'+fc.id+'.png'}}">
+
+                          <img ng-show="fc.facility_logo && is_selected_speciality(fc.id)" ng-src="{{fc.facility_logo}}">
+                          <img ng-show="!fc.facility_logo && is_selected_speciality(fc.id)" ng-src="{{'images/fc'+fc.id+'.png'}}">
+                        </span>
+                        <span ng-show="editmode">
+                          <img ng-show="fc.facility_logo" ng-src="{{fc.facility_logo}}">
+                          <img ng-show="!fc.facility_logo" ng-src="{{'images/fc'+fc.id+'.png'}}">
+                        </span>
                       </li>
                     </ul>
                     <table class="table table-bordered" ng-show="venue_facility.facility_id">
@@ -223,7 +275,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="modal-footer">
+                  <div class="modal-footer" ng-show="venue_facility.facility_id">
                     <button data-dismiss="modal" class="btn btn-primary" type="submit">Cancel</button>
                     <button ng-click="add_venue_facility()" class="btn btn-success" type="submit" id="send">Submit</button>
                   </div>
@@ -243,8 +295,8 @@
                   </div>
                   <div class="modal-body">
                     <select class="form-control" ng-model="venue_image.facility_id">
-                      <option value="0">Select venue</option>
-                      <option ng-repeat="fac in venue_full_details.facilities" ng-value="fac.facility_id">{{fac.facility_name}}</option>
+                      <option value="0">{{venue.venue_name}}</option>
+                      <option ng-repeat="fac in venue_facilities" ng-value="fac[0].facility_id">{{fac[0].facility_name}}</option>
                     </select>
                     <input id="venue_image" type="file" style="margin-top:10px; padding:0;" class="form-control">
                   </div>

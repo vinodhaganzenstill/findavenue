@@ -1,6 +1,13 @@
 <div class="order venue-details">{{data}}
       <h3 class="name-ground">{{page_data.venue_name}}</h3>
-      <p><span class="ground-rate">Rs 5000</span><span class="location">Velachery</span></p>
+      <p>
+        <strong>Price :</strong> 
+        <span class="ground-rate1"> <i class="fa fa-inr" aria-hidden="true"></i> {{page_data.cost}}</span>
+        <span style="float:right;">
+        <strong> Location :</strong> 
+        <span class="location1"> <i class="fa fa-map-marker" aria-hidden="true"></i> {{page_data.venue_location}}</span></span>
+      </p>
+
       <div ng-show="active_tab_image.length" data-ride="carousel" class="carousel slide" id="myCarousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">

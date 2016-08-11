@@ -1,65 +1,8 @@
     <div class="right_col" role="main"> 
       <!-- top tiles -->
       <div class="row tile_count">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <h2>My Profile <span></span></h2>
-        <div class="profile">
-        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-        <h4 class="address">Basic Info</h4>
-        </div>
-         <form name="profile_form" novalidate="" class="form-horizontal form-label-left" ng-submit="update_profile(user_details, profile_form)">
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <input type="hidden" ng-model="user_details.id" required=""  />
-                  <input type="text" class="form-control" placeholder="First Name" ng-model="user_details.name" required="">
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control" placeholder="Last Name" ng-model="user_details.last_name">
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <input type="email" class="form-control" placeholder="Email" ng-model="user_details.email" required="">
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <input type="text" class="form-control" placeholder="Address" ng-model="user_details.address" required="">
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control" placeholder="City" ng-model="user_details.city">
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control" placeholder="State" ng-model="user_details.state">
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control" placeholder="Mobile" ng-model="user_details.mobile" required=""> 
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control" placeholder="Postcode" ng-model="user_details.postcode">
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
-                  <button id="send" type="submit" class="btn btn-success">Update</button>
-                </div>
-                </form>
-
-                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-        
-        <h4 class="address">Change Password</h4>
-        </div>
-              
-              <form name="password_form" novalidate="" class="form-horizontal form-label-left" ng-submit="update_profile(user_details, password_form)">
-               <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <input type="password" class="form-control" placeholder="New password" ng-model="user_details.new_password" required="">
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <input type="password" class="form-control" placeholder="confirm password" ng-model="user_details.confirm_password" required="">
-                </div>
-                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
-                  <button type="reset" class="btn btn-primary">Cancel</button>
-                  <button id="send" type="submit" class="btn btn-success">Submit</button>
-                </div>
-                </form>
-        </div>
-        </div>
-       
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <h2>My Orders</h2>
+       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>My Venue Orders</h2>
         <table class="table table-bordered">
                 <thead>
                  <tr style="background:#ccc; margin-bottom:10px;">
@@ -81,33 +24,6 @@
                   <td><div class="add-row1" data-toggle="modal" data-target="#myModal4" ng-click="order_details(order.id);"><i class="fa fa-file-text-o" aria-hidden="true"></i>
                   </div></td>
                   </tr>
-                </tbody>
-              </table>
-              <hr>
-              <h2> My Venues </h2>
-              <table class="table table-bordered">
-                <thead>
-                 <tr style="background:#ccc; margin-bottom:10px;">
-                  <th>#</th>
-                  <th>Venue Name</th>
-                  <th>Description</th>
-                  <th>Cost</th>
-                  <th>Details</th> 
-                  <th>Actions</th>  
-                </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="venues in myvenues">
-                    <td>{{$index+1}}</td>
-                  <td>{{venues.venue_name}}</td>
-                  <td>{{venues.venue_description}}</td>
-                  <td>{{venues.cost}}</td>
-                  <td><div class="add-row1" data-toggle="modal" data-target="#myModal5" ng-click="getvenue_details(venues.id);"><i class="fa fa-file-text-o" aria-hidden="true"></i>
-</div> <div class="add-row1" data-toggle="modal" data-target="#myModal6" ng-click="getvenue_details(venues.id);"><i class="fa fa-file-image-o" aria-hidden="true"></i>
-</div></td>
-                  <td><a href="#ground/{{venues.id}}" class="fa fa-pencil"></a></td>
-                  </tr>
-                
                 </tbody>
               </table>
         </div>

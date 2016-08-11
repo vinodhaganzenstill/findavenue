@@ -30,7 +30,7 @@
                 <ul class="nav side-menu">
                  <li><a href="#home"><i class="fa fa-home"></i> Home </a></li>
                   <li><a href="#venues"><i class="fa fa-area-chart" aria-hidden="true"></i> Grounds & Clubhouse </a></li>
-                  <li ng-show="is_user_logged_in"><a href="#add_ground"><i class="fa fa-area-chart" aria-hidden="true"></i> Add Grounds & Clubhouse </a></li>
+                  <li ng-show="is_user_logged_in && session_user.user_role == 'owner'"><a href="#add_ground"><i class="fa fa-area-chart" aria-hidden="true"></i> Add Grounds & Clubhouse </a></li>
                   <li><a href="#about"><i class="fa fa-edit"></i> About </a></li>
                   <li><a href="#contact"><i class="fa fa-phone" aria-hidden="true"></i> Contact </a></li>
                 </ul>
@@ -53,7 +53,7 @@
 
               <ul class="nav navbar-nav navbar-right">
                 <li ><a href="#">Help</a></li>
-                <li ng-show="is_user_logged_in"><a href="#add_ground">Become a host</a></li>
+                <li ng-show="is_user_logged_in && session_user.user_role == 'owner'"><a href="#add_ground">Become a host</a></li>
                 <li ng-hide="is_user_logged_in"><a href="#/venues/login">Login</a></li>
                 <li ng-hide="is_user_logged_in"><a href="#/venues/signup">Signup</a></li>
 
@@ -103,6 +103,7 @@
                     </li>
                   </ul>
                 </li>
+                <li ng-show="is_user_logged_in && session_user.user_role == 'owner'"><a class="info-number" href="#myorders"><i class="fa fa-bell"></i><span class="badge bg-green">{{new_bookings}}</span></a></li>
               </ul>
             </nav>
           </div>
@@ -119,7 +120,7 @@
         <!-- footer content -->
         <footer>
           <div class="pull-left">
-            Copyrigh @rishi. <a href="#"></a>
+            Copyright @rishi. <a href="#"></a>
           </div>
           <div class="clearfix"></div>
         </footer>

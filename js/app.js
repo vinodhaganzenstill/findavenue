@@ -17,7 +17,8 @@ var states = [
         { name: 'home', state: { url: '/home', parent: 'base', templateUrl: 'views/home.html', controller: 'HomeCtrl', data: {text: "Home", visible: false } } },
         { name: 'about', state: { url: '/about', parent: 'base', templateUrl: 'views/about.html', controller: 'AboutCtrl', data: {text: "About us", visible: false } } },
         { name: 'contact', state: { url: '/contact', parent: 'base', templateUrl: 'views/contact.html', controller: 'ContactCtrl', data: {text: "Contact", visible: false } } },
-        { name: 'myprofile', state: { url: '/myprofile', parent: 'base', templateUrl: 'views/myorder.html', controller: 'MyOrderCtrl', data: {text: "My order", visible: true } } },
+        { name: 'myprofile', state: { url: '/myprofile', parent: 'base', templateUrl: 'views/myprofile.html', controller: 'MyProfileCtrl', data: {text: "My order", visible: true } } },
+        { name: 'myorders', state: { url: '/myorders', parent: 'base', templateUrl: 'views/myorder.html', controller: 'MyOrderCtrl', data: {text: "My order", visible: true } } },
         { name: 'detail', state: { url: '/detail/:venue_id', parent: 'venues', templateUrl: 'views/detail.html', data: {text: "Overview", visible: true } } },
         { name: 'book', state: { url: '/book/:venue_id', parent: 'venues', templateUrl: 'views/booking.html', data: {text: "Add Expense", visible: true } } },
         { name: 'map', state: { url: '/map/:venue_id', parent: 'venues', templateUrl: 'views/map.html', data: {text: "Add Rent", visible: true } } },
@@ -95,4 +96,8 @@ angular.module('yapp', [
 
     var cart_details = localStorage.getItem('cart_details');
     Session.cart_details = cart_details === null ? [] : JSON.parse(cart_details);
-});
+}).filter('to_trusted', ['$sce', function($sce){
+        return function(text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);

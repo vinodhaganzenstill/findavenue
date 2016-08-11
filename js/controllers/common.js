@@ -49,6 +49,13 @@ angular.module('yapp')
                 $location.path('venues/verify_mobile');
             }, 1000);
         }
+
+        AuthService.venueorderscount(Session.userId).then(function(res){
+          if(res['status'] == 'Success')
+          {
+              $scope.new_bookings = res['data'];
+          }
+        });
     }
 
     $rootScope.$on('$stateChangeStart', 
@@ -72,6 +79,13 @@ angular.module('yapp')
                 }, 1000);
               }
           }
+
+          AuthService.venueorderscount(Session.userId).then(function(res){
+            if(res['status'] == 'Success')
+            {
+                $scope.new_bookings = res['data'];
+            }
+          });
       }
     });
 

@@ -1,5 +1,5 @@
 angular.module('yapp')
-  .controller('MyOrderCtrl', function($scope, Session, $location, AUTH_REDIRECT, AuthService, $rootScope) {
+  .controller('MyProfileCtrl', function($scope, Session, $location, AUTH_REDIRECT, AuthService, $rootScope) {
 
 	$scope.orders = [];
 	
@@ -60,4 +60,34 @@ angular.module('yapp')
   	
   	console.log($scope.ordervenue_details);
 
+  });
+
+  angular.module('yapp')
+  .controller('MyOrderCtrl', function($scope, Session, $location, AUTH_REDIRECT, AuthService, $rootScope) {
+
+  $scope.orders = [];
+  
+  $scope.user_details= Session.user;
+
+    $scope.booking_details = [];
+    $scope.myvenues = [];
+    $scope.ordervenue_details = [];
+
+    AuthService.venueorders(Session.userId).then(function(res){
+      if(res['status'] == 'Success')
+      {
+          $scope.orders = res['data'];
+          $scope.user= Session.user.name;
+      }
+    });
+
+  $scope.order_details = function(id) {
+   AuthService.order_details(id).then(function(res){
+        if(res['status'] == 'Success')
+        {
+            $scope.booking_details = res['data'];
+        }
+      });
+  };
+   
   });

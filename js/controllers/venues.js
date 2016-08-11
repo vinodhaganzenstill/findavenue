@@ -96,6 +96,8 @@ angular.module('yapp')
 
                     $scope.active_tab_id = 0;
                     $scope.active_tab_image = $scope.page_data.images;
+                     $scope.map_url = '<iframe src="https://maps.google.com/maps?&q='+$scope.page_data.address_street+','+$scope.page_data.address_county+','+$scope.page_data.address_town+','+$scope.page_data.address_city+','+$scope.page_data.address_country+'&output=embed" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>';
+              
                     $timeout(function(){
                         angular.element('#myCarousel').carousel();
                     }, 1000);
@@ -128,7 +130,7 @@ angular.module('yapp')
         {
             
             $scope.order_details = Session.cart_details;
-            var data = {user_id: Session.user_id, total_amount: $scope.total_amount(), booking_details: $scope.cart_details};
+            var data = {user_id: Session.userId, total_amt: $scope.total_amount(), booking_details: $scope.cart_details};
 
             AuthService.booking(data).then(function(res){
                 Session.cart_details = [];
@@ -141,6 +143,41 @@ angular.module('yapp')
         {
 
         }
+    };
+
+    $scope.clear_cart = function(){
+        Session.cart_details = [];
+        $scope.order_details = [];
+        $rootScope.$broadcast("CARTCHANGE");
+        localStorage.setItem('cart_details', JSON.stringify(Session.cart_details));
+    };
+
+    $scope.delete_cart_item = function(ind){
+        if($scope.order_details[ind].facility_id != '0')
+        {
+            $scope.order_details.splice(ind, 1);
+        }
+        else
+        {
+            var venue_id = $scope.order_details[ind].venue_id;
+            var facility_id = $scope.order_details[ind].facility_id;
+            var booking_time = $scope.order_details[ind].booking_time;
+            var splice_cnt = 1;
+            for(var $i=ind+1;$i<$scope.order_details.length;$i++)
+            {
+                if($scope.order_details[$i].venue_id == venue_id && $scope.order_details[$i].booking_time == booking_time)
+                {
+                    splice_cnt++;
+                }
+                else
+                    break;
+            }
+            $scope.order_details.splice(ind, splice_cnt);
+        }
+
+        Session.cart_details = $scope.order_details;
+        $rootScope.$broadcast("CARTCHANGE");
+        localStorage.setItem('cart_details', JSON.stringify(Session.cart_details));
     };
 
     $scope.place_order = function()
@@ -279,7 +316,7 @@ angular.module('yapp')
         angular.forEach(Session.cart_details, function(v,k){
             console.log(v);
             angular.forEach(v.booked_time, function(v1,k1){
-                if(typeof $scope.week_booking[v.booking_date][v1] != "undefined")
+                if(typeof $scope.week_booking[v.booking_date][v1] != "undefined" && v.venue_id == $scope.active_id)
                     $scope.week_booking[v.booking_date][v1] = 3;
             });
         });
@@ -314,12 +351,13 @@ angular.module('yapp')
         angular.forEach($scope.booked_slots, function(v,k){
             var mmonth = parseInt($scope.page_data.month) == parseInt(v.booked_date.split("-")[1]);
             var dataa = $scope.change_start_end(v.booked_time);
-            var data = {cost: (mmonth ? $scope.page_data.cost : $scope.page_data.next_month_cost), name: $scope.page_data.venue_name, venue_id:$scope.page_data.id, facility_id: 0, booking_date:v.booked_date, booked_time: v.booked_time, booking_time:dataa.booking_time, booking_start_time: dataa.booking_start_time, booking_end_time: dataa.booking_end_time, quantity: v.booked_time.length};
+            var mindex = $scope.order_details.length ? $scope.order_details[$scope.order_details.length - 1].mindex + 1 : 1;
+            var data = {mindex: mindex, sindex: 0, cost: (mmonth ? $scope.page_data.cost : $scope.page_data.next_month_cost), name: $scope.page_data.venue_name, venue_id:$scope.page_data.id, facility_id: 0, booking_date:v.booked_date, booked_time: v.booked_time, booking_time:dataa.booking_time, booking_start_time: dataa.booking_start_time, booking_end_time: dataa.booking_end_time, quantity: v.booked_time.length};
             $scope.order_details.push(data);
             angular.forEach($scope.page_data.facilities, function(v1,k1){
                 if(v1.selected)
                 {
-                    var data = {cost: (mmonth ? v1.cost : v1.next_month_cost), name: v1.facility_name, venue_id:$scope.page_data.id, facility_id: v1.id, booking_date:v.booked_date, booked_time: v.booked_time, booking_time:dataa.booking_time, booking_start_time: dataa.booking_start_time, booking_end_time: dataa.booking_end_time, quantity: v.booked_time.length};
+                    var data = {mindex: mindex, sindex: (k1 + 1), cost: (mmonth ? v1.cost : v1.next_month_cost), name: v1.facility_name, venue_id:$scope.page_data.id, facility_id: v1.id, booking_date:v.booked_date, booked_time: v.booked_time, booking_time:dataa.booking_time, booking_start_time: dataa.booking_start_time, booking_end_time: dataa.booking_end_time, quantity: v.booked_time.length};
                     $scope.order_details.push(data);
                 }
             });

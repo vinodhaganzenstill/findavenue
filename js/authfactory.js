@@ -66,6 +66,14 @@ angular.module('yapp')
         });
     };
 
+    authService.update_venue = function (data) {
+    return $http
+        .post('//zenstill.com/demo/findavenue/api.php?action=updatevenue', data, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}})
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
     authService.allfacility = function () {
     return $http
         .get('//zenstill.com/findavenue/api/ground_details/get_all_facility.php')
@@ -110,6 +118,22 @@ angular.module('yapp')
     authService.orders = function (id) {
     return $http
         .get('//zenstill.com/demo/findavenue/api.php?action=myorders&user_id=' +id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.venueorders = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=venueorders&user_id=' +id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.venueorderscount = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=venueorderscount&user_id=' +id)
         .then(function (res) {
             return res['data'];
         });
@@ -187,6 +211,36 @@ angular.module('yapp')
         });
     };
 
+    authService.getvenuecost = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=getvenuecost&venue_id='+id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.getvenuefacilities = function (id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=getvenuefacilities&venue_id='+id)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+authService.add_availability = function (day,enddate,venue_id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=add_availability&venue_id='+venue_id+'&day='+day+'&enddate='+enddate)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
+
+    authService.add_availability1 = function (day,enddate,venue_id) {
+    return $http
+        .get('//zenstill.com/demo/findavenue/api.php?action=add_availability1&venue_id='+venue_id+'&day='+day+'&enddate='+enddate)
+        .then(function (res) {
+            return res['data'];
+        });
+    };
     authService.isAuthenticated = function () {
         return !!Session.userId;
     };
